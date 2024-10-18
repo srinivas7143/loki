@@ -52,7 +52,7 @@ helm repo update
 
 ```
 
-**Installing Loki**
+## Installing Loki
 
 **3\. Install Loki**
 
@@ -88,7 +88,7 @@ Check if the Loki pod is running successfully:
 kubectl -n ${K8S_NAMESPACE} get pod -l app.kubernetes.io/name=loki
 ```
 
-**Setting Up Log Agent**
+## Setting Up Log Agent
 
 **5\. Create LogPipeline for Fluent Bit**
 
@@ -132,7 +132,7 @@ spec:
 EOF
 ```
 
-**Installing Grafana**
+## Installing Grafana
 
 **6\. Install Grafana**
 
@@ -202,7 +202,7 @@ Forward the Grafana service to access the UI locally:
 ```bash
 kubectl -n ${K8S_NAMESPACE} port-forward svc/grafana 3000:80
 ```
-**Exposing Grafana**
+## Exposing Grafana
 
 **10\. Expose Grafana Using Kyma API Gateway**
 
@@ -272,7 +272,7 @@ kubectl -n ${K8S_NAMESPACE} get virtualservice -l apirule.gateway.kyma-project.i
 
 ```
 
-# Sample output will be like:
+Sample output will be like:
 
 my-grafana.c-124cd24.kyma.ondemand.com%
 
@@ -285,7 +285,7 @@ export GRAFANA_LINK="https://{Virtual-service}" # Replace with your actual host
 
 ```
 
-**Adding Grafana to Kyma Dashboard**
+## Adding Grafana to Kyma Dashboard
 
 **13\. Add Grafana Link to Kyma Dashboard**
 
