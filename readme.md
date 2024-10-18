@@ -57,7 +57,7 @@ spec:
       - GET
       - POST
   gateway: kyma-system/kyma-gateway
-  host: my-grafana.c-124cd24.kyma.ondemand.com
+  host: my-grafana
   rules:
     - accessStrategies:
         - handler: allow
