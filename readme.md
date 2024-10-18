@@ -44,3 +44,31 @@ data:
         link: https://my-grafana.c-124cd24.kyma.ondemand.com
 EOF
 ```
+```bash
+cat <<EOF | kubectl apply -f -
+apiVersion: gateway.kyma-project.io/v1beta1
+kind: APIRule
+metadata:
+  name: grafana
+  namespace: loki
+spec:
+  corsPolicy:
+    allowMethods:
+      - GET
+      - POST
+  gateway: kyma-system/kyma-gateway
+  host: my-grafana.c-124cd24.kyma.ondemand.com
+  rules:
+    - accessStrategies:
+        - handler: allow
+      methods:
+        - GET
+        - POST
+      mutators:
+        - handler: noop
+      path: /.*
+  service:
+    name: grafana
+    port: 80
+EOF
+```
