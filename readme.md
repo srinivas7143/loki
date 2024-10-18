@@ -24,3 +24,23 @@ helm upgrade --install --create-namespace -n ${K8S_NAMESPACE} ${HELM_LOKI_RELEAS
   --set 'singleBinary.extraEnv[0].name=GOMEMLIMIT' \
   --set 'singleBinary.extraEnv[0].value=225MiB'
 ```
+```bash
+kubectl apply -f - <<EOF
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: grafana
+  namespace: kube-public
+  labels:
+    busola.io/extension: statics
+    busola.io/extension-version: '0.5'
+data:
+  general: |-
+    externalNodes:
+    - category: Observability
+      icon: display
+      children:
+      - label: My Grafana
+        link: https://my-grafana.c-124cd24.kyma.ondemand.com
+EOF
+```
