@@ -59,8 +59,8 @@ helm repo update
 Use Helm to install Loki with specific configurations:
 
 ```bash
-helm install loki grafana/loki \
-  -f https://raw.githubusercontent.com/grafana/loki/main/production/helm/loki/single-binary-values.yaml \
+helm upgrade --install --create-namespace -n ${K8S_NAMESPACE} ${HELM_LOKI_RELEASE} grafana/loki \
+-f https://raw.githubusercontent.com/grafana/loki/main/production/helm/loki/single-binary-values.yaml \
   --set loki.storage.bucketNames.chunks=default-chunks \
   --set loki.storage.bucketNames.ruler=default-ruler \
   --set 'singleBinary.resources.requests.cpu=0.25' \
@@ -70,7 +70,6 @@ helm install loki grafana/loki \
   --set 'loki.auth_enabled=false' \
   --set 'singleBinary.extraEnv[0].name=GOMEMLIMIT' \
   --set 'singleBinary.extraEnv[0].value=225MiB'
-
 ```
 
 **4\. Verify Loki Installation**
