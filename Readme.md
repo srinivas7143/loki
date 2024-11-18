@@ -88,39 +88,22 @@ Create a LogPipeline resource that forwards logs to Loki:
 
 ```bash
 cat <<EOF | kubectl apply -f -
-
 apiVersion: telemetry.kyma-project.io/v1alpha1
-
 kind: LogPipeline
-
 metadata:
-
- name: custom-loki
-
+  name: custom-loki
 spec:
-
- input:
-
- application:
-
- namespaces:
-
- system: true
-
- output:
-
- custom: |
-
- name  loki
-
- host  ${HELM_LOKI_RELEASE}.${K8S_NAMESPACE}.svc.cluster.local
-
- port  3100
-
- auto_kubernetes_labels off
-
- labels job=fluentbit, container=\$kubernetes['container_name'], namespace=\$kubernetes['namespace_name'], pod=\$kubernetes['pod_name'], node=\$kubernetes['host'], app=\$kubernetes['labels']['app'],app=\$kubernetes['labels']['app.kubernetes.io/name']
-
+  input:
+    application:
+      namespaces:
+        system: true
+  output:
+    custom: |
+      name loki
+      host ${HELM_LOKI_RELEASE}.${K8S_NAMESPACE}.svc.cluster.local
+      port 3100
+      auto_kubernetes_labels off
+      labels job=fluentbit, container=\$kubernetes['container_name'], namespace=\$kubernetes['namespace_name'], pod=\$kubernetes['pod_name'], node=\$kubernetes['host'], app=\$kubernetes['labels']['app'], app=\$kubernetes['labels']['app.kubernetes.io/name']
 EOF
 ```
 
@@ -140,42 +123,25 @@ Create a ConfigMap to configure Loki as a data source for Grafana:
 
 ```bash
 cat <<EOF | kubectl apply -n ${K8S_NAMESPACE} -f -
-
 apiVersion: v1
-
 kind: ConfigMap
-
 metadata:
-
- name: grafana-loki-datasource
-
- labels:
-
- grafana_datasource: "1"
-
+  name: grafana-loki-datasource
+  labels:
+    grafana_datasource: "1"
 data:
-
- loki-datasource.yaml: |-
-
- apiVersion: 1
-
- datasources:
-
- - name: Loki
-
- type: loki
-
- access: proxy
-
- url: "http://${HELM_LOKI_RELEASE}:3100"
-
- version: 1
-
- isDefault: false
-
- jsonData: {}
-
+  loki-datasource.yaml: |-
+    apiVersion: 1
+    datasources:
+    - name: Loki
+      type: loki
+      access: proxy
+      url: "http://${HELM_LOKI_RELEASE}:3100"
+      version: "1" # Wrap the version in quotes
+      isDefault: false
+      jsonData: {}
 EOF
+
 ```
 
 **8\. Retrieve Grafana Admin Password**
